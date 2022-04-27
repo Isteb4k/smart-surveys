@@ -1,0 +1,70 @@
+scalar Void
+
+enum SurveyStatus {
+  new
+  published
+  accepted
+  refused
+  closed
+}
+
+type Survey {
+  id: ID!
+  description: String!
+  status: SurveyStatus!
+  questions: [Question!]!
+  conditions: [Condition!]
+}
+
+type Condition {
+  field: String!
+  operator: String!
+  sample: String!
+}
+
+type Question {
+  id: ID!
+  question: String!
+  type: String!
+  options: [String!]
+  conditions: [Condition!]
+}
+
+type Answer {
+  id: ID!
+  surveyID: ID!,
+  questionID: ID!
+  userID: ID!
+  answer: String
+  options: [String!]
+}
+
+input CreateSurveyInput {
+  description: String!
+  questions: [QuestionInput!]!
+  conditions: [ConditionInput!]
+}
+
+input QuestionInput {
+  question: String!
+  type: String!
+  options: [String!]
+  conditions: [ConditionInput!]
+}
+
+input ConditionInput {
+  field: String!
+  operator: String!
+  sample: String!
+}
+
+type Query {
+  surveys: [Survey!]!
+  survey(id: ID!): Survey
+  responses(surveyId: ID!): [Answer!]
+}
+
+type Mutation {
+  publishSurvey(surveyId: ID!): Void
+  createSurvey(input: CreateSurveyInput!): Void
+}

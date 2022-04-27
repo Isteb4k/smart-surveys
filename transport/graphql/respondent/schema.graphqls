@@ -1,0 +1,30 @@
+scalar Void
+
+type SurveyBlank {
+  surveyId: ID!
+  description: String!
+  questions: [QuestionBlank!]!
+}
+
+type QuestionBlank {
+  id: ID!
+  type: String!
+  question: String!
+  options: [String!]
+}
+
+type Query {
+  surveys: [SurveyBlank!]
+  survey(id: ID!): SurveyBlank!
+}
+
+input AnswerInput {
+  surveyId: ID!
+  questionId: ID!
+  answer: String
+  options: [String!]
+}
+
+type Mutation {
+  answer(input: AnswerInput): Void
+}
